@@ -7,7 +7,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -16,6 +18,7 @@ import java.util.List;
 public class NoteActivity extends AppCompatActivity {
 
     public static final String NOTE_INFO_POSITION = "com.abedkiloo.note.NOTE_INFO_POSITION";
+    private NoteActivityViewModel noteActivityViewModel;
     private NoteInfo noteInfo;
     private boolean isNewNote;
     private int defaultValueBoolean;
@@ -24,7 +27,6 @@ public class NoteActivity extends AppCompatActivity {
     private List<CourseInfo> courses;
     private Spinner spinnerCourses;
     private int notePosition;
-    private String OriginalCourseId,OriginalCourseTitle,OriginalCourseText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,24 @@ public class NoteActivity extends AppCompatActivity {
             public void onClick(View v) {
             }
         });
+
+
+        /**
+         * view model class
+         */
+        ViewModelProvider viewModelProvider = new ViewModelProvider(getViewModelStore(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()));
+
+        noteActivityViewModel = viewModelProvider.get(NoteActivityViewModel.class);
+
+        if (savedInstanceState != null && noteActivityViewModel.isNewlyCreated)
+            noteActivityViewModel.restoreState(savedInstanceState);
+
+        noteActivityViewModel.isNewlyCreated = false;
+
+
         readDisplayStateValues();
-        saveCUrrrentNoteDetails();
+        saveCurrentNoteDetails();
 
         textNoteTitle = findViewById(R.id.test_note_title);
         textNoteText = findViewById(R.id.test_note_text);
@@ -51,12 +69,12 @@ public class NoteActivity extends AppCompatActivity {
             displayNote(spinnerCourses, textNoteTitle, textNoteText);
     }
 
-    private void saveCUrrrentNoteDetails() {
-        if(isNewNote)
+    private void saveCurrentNoteDetails() {
+        if (isNewNote)
             return;
-        OriginalCourseId = noteInfo.getCourse().getCourseId();
-        OriginalCourseTitle = noteInfo.getCourse().getCourseId();
-        OriginalCourseText = noteInfo.getCourse().getCourseId();
+        noteActivityViewModel.OriginalCourseId = noteInfo.getCourse().getCourseId();
+        noteActivityViewModel.OriginalCourseTitle = noteInfo.getCourse().getCourseId();
+        noteActivityViewModel.OriginalCourseText = noteInfo.getCourse().getCourseId();
     }
 
     private void displayNote(Spinner spinnerCourses, EditText textNoteTitle, EditText textNoteText) {
@@ -82,9 +100,15 @@ public class NoteActivity extends AppCompatActivity {
     }
 
     private void createNewNote() {
-        DataManager dataManager= DataManager.getInstance();
+        DataManager dataManager = DataManager.getInstance();
         notePosition = dataManager.createNewNote();
-        noteInfo=dataManager.getNotes().get(notePosition);
+        noteInfo = dataManager.getNotes().get(notePosition);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        noteActivityViewModel.saveState(outState);
     }
 
     @Override
