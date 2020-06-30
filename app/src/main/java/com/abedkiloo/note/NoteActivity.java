@@ -31,7 +31,7 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.note_activty);
         spinnerCourses = findViewById(R.id.spinner_course);
 
         courses = DataManager.getInstance().getCourses();
