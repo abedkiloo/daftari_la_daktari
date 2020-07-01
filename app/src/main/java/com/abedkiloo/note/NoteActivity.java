@@ -2,7 +2,6 @@ package com.abedkiloo.note;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -10,8 +9,6 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -38,12 +35,6 @@ public class NoteActivity extends AppCompatActivity {
         ArrayAdapter<CourseInfo> courseInfoArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courses);
         spinnerCourses.setAdapter(courseInfoArrayAdapter);
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.edit_note_floating_action_bar);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
 
 
         /**
@@ -63,8 +54,8 @@ public class NoteActivity extends AppCompatActivity {
         readDisplayStateValues();
         saveCurrentNoteDetails();
 
-        textNoteTitle = findViewById(R.id.test_note_title);
-        textNoteText = findViewById(R.id.test_note_text);
+        textNoteTitle = findViewById(R.id.text_note_title);
+        textNoteText = findViewById(R.id.text_note_text);
         if (!isNewNote)
             displayNote(spinnerCourses, textNoteTitle, textNoteText);
     }
