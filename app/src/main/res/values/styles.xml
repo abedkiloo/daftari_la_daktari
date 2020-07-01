@@ -17,4 +17,9 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="CourseTiTle" parent="@style/TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/plur_orange</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
 </resources>
